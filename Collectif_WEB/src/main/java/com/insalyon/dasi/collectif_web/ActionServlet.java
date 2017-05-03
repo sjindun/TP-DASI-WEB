@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Activite;
+import metier.modele.Adherent;
+import metier.modele.Demande;
+import metier.modele.Evenement;
 import metier.service.ServiceMetier;
 
 /**
@@ -42,13 +45,65 @@ public class ActionServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        JpaUtil.init();
-              
         String todo = request.getParameter("todo");
         PrintWriter out=response.getWriter();
         
         
-        if("getListeActivites".equals(todo)){
+        if("connexionAdherent".equals(todo)){
+            String mail = request.getParameter("mail");
+            if(mail.equals("admin")){
+                //todo: gerer Connexion admin
+            }else{
+                ServiceMetier servM = new ServiceMetier();
+                Adherent adherent = servM.seConnecter(mail);
+                if(adherent==null){
+                    out.println("fail");
+                }else{
+                    out.println(adherent.getId());
+                }
+            }
+        }else if("inscriptionAdherent".equals(todo)){
+            String nom = request.getParameter("nom");
+            String prenom = request.getParameter("prenom");
+            String mail = request.getParameter("mail");
+            String adresse = request.getParameter("adresse");
+            
+            ServiceMetier servM = new ServiceMetier();
+            Adherent adherent = servM.creerAdherent(nom, prenom, mail, adresse);
+            if(adherent==null){
+                out.println("fail");
+            }else{
+                out.println("success");
+            }
+            
+        }else if("getListeDemandes".equals(todo)){
+            long idAdherent = Long.parseLong(request.getParameter("idAdherent"));
+            
+            ServiceMetier servM = new ServiceMetier();
+            Adherent adherent = servM.getAdherent(idAdherent);
+            
+            List<Demande> liste = servM.demandesPersonnelles(adherent);
+            
+            JsonArray jsonListe = new JsonArray();
+            if(liste!=null){
+                for(Demande d : liste){
+                    JsonObject jsonDemande = new JsonObject();
+                    jsonDemande.addProperty("id", d.getId());
+                    jsonDemande.addProperty("denomination", d.getActivite().getDenomination());
+                    jsonDemande.addProperty("date", d.getDate().toString());
+                    jsonDemande.addProperty("heure", d.getMomentJournee());
+                    Evenement eve = d.getEvenement();
+                    jsonDemande.addProperty("lieu", (eve==null)? "-" : ((eve.getLieu()==null)?"-": eve.getLieu().getDenomination() ));
+                    jsonListe.add(jsonDemande);
+                }
+                JsonObject container = new JsonObject();
+                container.add("demandes", jsonListe);
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                String json = gson.toJson(container);
+                out.println(json);
+            }
+            
+        }else if("getListeActivites".equals(todo)){
             
             ServiceMetier servM = new ServiceMetier();
             List<Activite> activites = servM.getActivites();
@@ -59,6 +114,7 @@ public class ActionServlet extends HttpServlet {
                 JsonObject jsonActivite = new JsonObject();
                 jsonActivite.addProperty("id", act.getId());
                 jsonActivite.addProperty("denomination", act.getDenomination());
+                jsonActivite.addProperty("payant", act.getPayant());
                 
                 //jsonListe.add("activites", "[" + act.getId() +"] " + act.getDenomination() + " " + "voir");
                 jsonListe.add(jsonActivite);
@@ -71,26 +127,11 @@ public class ActionServlet extends HttpServlet {
             String json = gson.toJson(container);
             out.println(json);
             
-            /*
-            try (PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Servlet ActionServlet</title>");            
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Liste des activités : </h1>");
-                for(Activite act : activites){
-                    out.println("<p>[" + act.getId() +"] " + act.getDenomination() + " " + "voir" + "</p>");
-                }
-                out.println("</body>");
-                out.println("</html>");
-            }
-            */
         }else if("getActivite".equals(todo)){
+            long id = Long.parseLong(request.getParameter("id"));
+            
             ServiceMetier servM = new ServiceMetier();
             List <Activite> liste = servM.getActivites();
-            long id = Long.parseLong(request.getParameter("id"));
             JsonArray jsonListe = new JsonArray();
             for(Activite act : liste){
                 if(act.getId()==id){

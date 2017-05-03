@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Collect'IF - Page de demande adhérent</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+        
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            th, td {
+                 border-bottom: 1px solid #ddd;
+            }
+            tr:nth-child(even) {background-color: #f2f2f2}
+        </style>
+        
+        
+    </head>
+    <body>
+        <form>
+            <input id='accueil' type="button" value='Accueil' onclick="accederPageAccueil()"/>
+            <input id='demande' type="button" value='Faire Demande' onclick="javascript:window.location.reload()"/>
+            <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./index.html'"/>
+            <!-- TODO : BOUTON DECONNEXION -->
+        </form>
+        
+        <p>Activité : </p>
+        <select id="activite">
+        </select>
+        
+        <p>Date : </p>
+        <input type='date' name='date'>
+        
+        <p>Moment : </p>
+        <select>
+            <option value="matin">Matin</option>
+            <option value="apresmidi">Après Midi</option>
+            <option value="soir">Soir</option>
+        </select>
+        
+        <input type="button" name="faireunedemande" value="Faire une demande" onclick="javascript:location.href='./inscription.html'">
+        
+        <p>Activités : </p>
+        <table id="tableau" style="width:60%">
+            <tr>
+                <th>Nom Activité</th>
+                <th>Payant</th>
+            </tr>
+        </table>
+        
+        
+        <div id='message' style='color: red;'></div><br/>
+        
+        
+        
+        <script>
+            
+            function getParameterByName(name) {
+                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+            }
+            
+            function accederPageAccueil(){
+                var url = './adherent-accueil.html?idAdherent=' +  getParameterByName('idAdherent');
+                location.href= url;
+            }
+            
+            function faireUneDemande(){
+               //TODO : Coder la demande  
+            }
+            
+            $(function() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'getListeActivites',
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var activites = data.activites;
+                    var contenuHtml = "";
+                    var contenuHtml2 = "";
+                    var i;
+                    for (i = 0; i < activites.length; i++) {
+                        contenuHtml += '<tr>'
+                                + '<td>'+ activites[i].denomination +'</td>' 
+                                + '<td>'+ activites[i].payant +'</td>' 
+                                + '</tr>';
+                        
+                        contenuHtml2 += '<option value="'+activites[i].id+'">'+activites[i].denomination+'</option>';
+                    }
+                    $('#tableau').append(contenuHtml);
+                    $('#activite').append(contenuHtml2);
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR : veuillez recommencer');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+        </script>
+        
+        
+    </body>
+</html>

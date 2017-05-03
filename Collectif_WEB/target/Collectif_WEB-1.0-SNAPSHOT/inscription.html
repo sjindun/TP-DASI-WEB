@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Collect'IF - Page d'Inscription</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+    </head>
+    <body>
+        <h1>INSCRIPTION</h1>
+        <form>
+            Nom: <input id='nom' type="text" name='nom'/><br/><br/>
+            Prenom: <input id='prenom' type="text" name='prenom'/><br/><br/>
+            Mail: <input id='mail' type="text" name='mail'/><br/><br/>
+            Adresse: <input id='adresse' type="text" name='adresse'/><br/><br/>
+            <input id='inscription' type="button" value='INSCRIPTION'/>
+        </form>
+        <div id='message' style='color: red;'></div><br/>
+        
+        <script>
+            $( "#inscription" ).click(function() {
+                $('#message').html('Inscription en cours..');
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'inscriptionAdherent',
+                        nom: $("#nom").val(),
+                        prenom: $("#prenom").val(),
+                        mail: $("#mail").val(),
+                        adresse: $("#adresse").val()
+                    },
+                    dataType: 'text'
+                })
+                .done(function(data) {
+                    if(data.substring(0, 7)==="success"){
+                        alert('INSCRIPTION REUSSIE');
+                        window.location.href = "./index.html";
+                    }else if(data.substring(0,4)==='fail'){
+                        alert('INSCRIPTION IMPOSSIBLE !!!!!');
+                    }
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR : veuillez recommencer');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+        </script>
+        
+        
+    </body>
+</html>

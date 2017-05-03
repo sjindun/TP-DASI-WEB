@@ -9,12 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.modele.*;
 import java.util.List;
-import java.util.Scanner;
 import javax.persistence.RollbackException;
-import util.GeoTest;
 import static util.GeoTest.getLat;
 import static util.GeoTest.getLng;
-import vue.Main;
 
 public class ServiceMetier {
 
@@ -66,6 +63,22 @@ public class ServiceMetier {
         JpaUtil.fermerEntityManager();
         return A;
     }
+    
+    // AJOUT 
+    public static Adherent getAdherent(long id) {
+        JpaUtil.creerEntityManager();
+
+        Adherent A = null;
+        AdherentDAO aDAO = new AdherentDAO();
+        try{
+            A = aDAO.findById(id);
+        }catch(Exception e){
+        }
+        JpaUtil.fermerEntityManager();
+        return A;
+    }
+    
+    
 
     public static Demande creerDemande(Adherent A, String activite, Date date, String moment) {
         JpaUtil.creerEntityManager();

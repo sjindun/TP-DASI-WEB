@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Collect'IF - Page d'accueil adhérent</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+        
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            th, td {
+                 border-bottom: 1px solid #ddd;
+            }
+            tr:nth-child(even) {background-color: #f2f2f2}
+        </style>
+        
+        
+    </head>
+    <body>
+        <form>
+            <input id='accueil' type="button" value='Accueil' onclick="javascript:window.location.reload()"/>
+            <input id='demande' type="button" value='Faire Demande' onclick="accederPageDemande()"/>
+            <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./index.html'"/>
+            <!-- TODO : BOUTON DECONNEXION -->
+        </form>
+        <p>Mes demandes : </p>
+        <table id="tableau" style="width:60%">
+            <tr>
+                <th>Id Demande</th>
+                <th>Nom Activité</th>
+                <th>Date</th>
+                <th>Lieu affecté ?</th>
+            </tr>
+        </table>
+        <div id='message' style='color: red;'></div><br/>
+        
+        
+        
+        <script>
+            
+            function getParameterByName(name) {
+                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+            }
+            
+            function accederPageDemande(){
+                var url = './adherent-demande.html?idAdherent=' +  getParameterByName('idAdherent');
+                location.href= url;
+            }
+            
+            $(function() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'getListeDemandes',
+                        idAdherent: getParameterByName('idAdherent')
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var demandes = data.demandes;
+                    var contenuHtml = "";
+                    var i;
+                    for (i = 0; i < demandes.length; i++) {
+                        contenuHtml += '<tr>'
+                                + '<td>'+ demandes[i].id +'</td>'
+                                + '<td>'+ demandes[i].denomination +'</td>' 
+                                + '<td>'+ demandes[i].date + " - "+  demandes[i].heure +'</td>' 
+                                + '<td>'+ demandes[i].lieu +'</td>' 
+                                + '</tr>';
+                    }
+                    $('#tableau').append(contenuHtml);
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR : veuillez recommencer');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+        </script>
+        
+        
+    </body>
+</html>

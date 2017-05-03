@@ -3,10 +3,57 @@
     <head>
         <title>Collect'IF - Page d'Accueil</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <p>Bienvenue</p>
-        <a href="./listeActivites.html" >Voir la liste des activités</a>
+        <h1>Bienvenue au CollectIF !</h1>
+        <form>
+            Email: <input id='mail' type="text" name='mail'/><br/>
+            <div id='message' style='color: red;'></div><br/>
+            <input id="connexion" type="button" value='Se connecter'/>
+        </form>
+        
+        
+        
+        <p>Pas encore membre ?</p>
+        <input type="button" name="inscription" value="INSCRIPTION" onclick="javascript:location.href='./inscription.html'">
+        
+        
+        <script>
+
+            $( "#connexion" ).click(function() {
+                $('#message').html('Connexion..');
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'connexionAdherent',
+                        mail: $('#mail').val()
+                    },
+                    dataType: 'text'
+                })
+                .done(function(data) {
+                    if(data.indexOf('fail')===0){
+                        alert('ADHERENT NON EXISTANT')
+                        $('#message').html('Veuillez entrer un mail valide !');
+                    }else{
+                        window.location.href = "./adherent-accueil.html?idAdherent=" + data.substring(0,data.indexOf('\n'));
+                    }
+                   
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR : veuillez recommencer');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+        </script>
+        
+        
+        
         
     </body>
 </html>
