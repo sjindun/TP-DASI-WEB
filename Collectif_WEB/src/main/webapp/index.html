@@ -37,8 +37,12 @@
                     if(data.indexOf('fail')===0){
                         alert('ADHERENT NON EXISTANT')
                         $('#message').html('Veuillez entrer un mail valide !');
+                    }else if(data.indexOf('success')===0){
+                        window.location.href = "./adherent-accueil.html";
+                        //window.location.href = "./adherent-accueil.html?idAdherent=" + data.substring(0,data.indexOf('\n'));
                     }else{
-                        window.location.href = "./adherent-accueil.html?idAdherent=" + data.substring(0,data.indexOf('\n'));
+                        $('#message').html('ERREUR : veuillez recommencer');
+                        console.log("data = " + data);
                     }
                    
                 })

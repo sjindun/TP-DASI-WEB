@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import metier.modele.Activite;
 import metier.modele.Adherent;
 import metier.modele.Demande;
@@ -43,26 +44,55 @@ public class ActionServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
+        HttpSession session = request.getSession(true);
+        request.setCharacterEncoding("UTF-8");
+                
         String todo = request.getParameter("todo");
-        PrintWriter out=response.getWriter();
         
-        
-        if("connexionAdherent".equals(todo)){
+        if("connexionAdherent".equals(todo)){   
             String mail = request.getParameter("mail");
             if(mail.equals("admin")){
+                session.setAttribute("admin", "true");
                 //todo: gerer Connexion admin
-            }else{
+            }else{  // connexion d'un Adherent
                 ServiceMetier servM = new ServiceMetier();
                 Adherent adherent = servM.seConnecter(mail);
+                
+                PrintWriter out=response.getWriter();
                 if(adherent==null){
                     out.println("fail");
                 }else{
-                    out.println(adherent.getId());
+                    session.setAttribute("adherent", adherent);
+                    session.setAttribute("admin", "false");
+                    response.setContentType("text/html;charset=UTF-8");
+                    out.println("success");
                 }
             }
-        }else if("inscriptionAdherent".equals(todo)){
+        }else{
+            // Vérification de la session
+            String estAdmin = (String)session.getAttribute("admin");
+            if(estAdmin == null){
+                // Redirection vers l'index
+            }else if("true".equals(estAdmin)){
+                // todo finir
+            }else{
+                // todo : Adherent normal
+            }
+            
+            Adherent sessionAdherent = (Adherent)session.getAttribute("adherent");
+            if(sessionAdherent == null){
+                // Redirection vers l'index
+                //this.getServletContext().getRequestDispatcher("/index.html").forward(request, response);
+                response.sendRedirect("/index.html");
+                System.out.println("cc");
+            }else{
+                // Autres actions !!
+            }
+        }
+        
+        /**
+        else if("inscriptionAdherent".equals(todo)){
             String nom = request.getParameter("nom");
             String prenom = request.getParameter("prenom");
             String mail = request.getParameter("mail");
@@ -150,7 +180,7 @@ public class ActionServlet extends HttpServlet {
             String json = gson.toJson(container);
             out.println(json);
         }
-        
+        **/
         
         
         
