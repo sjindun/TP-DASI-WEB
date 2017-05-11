@@ -51,6 +51,7 @@ public class ActionServlet extends HttpServlet {
         String todo = request.getParameter("todo");
         
         if("connexionAdherent".equals(todo)){   
+            
             String mail = request.getParameter("mail");
             if(mail.equals("admin")){
                 session.setAttribute("admin", "true");
