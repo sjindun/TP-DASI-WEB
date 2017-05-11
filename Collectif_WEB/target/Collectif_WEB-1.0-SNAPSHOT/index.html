@@ -3,22 +3,37 @@
     <head>
         <title>Collect'IF - Page d'Accueil</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width">
+        <!--
+		<meta name="viewport" content="width=device-width">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+		-->
+		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <h1>Bienvenue au CollectIF !</h1>
-        <form>
-            Email: <input id='mail' type="text" name='mail'/><br/>
-            <div id='message' style='color: red;'></div><br/>
-            <input id="connexion" type="button" value='Se connecter'/>
-        </form>
-        
-        
-        
-        <p>Pas encore membre ?</p>
-        <input type="button" name="inscription" value="INSCRIPTION" onclick="javascript:location.href='./inscription.html'">
-        
+        <div class="jumbotron">
+		  <div class="container text-center">
+			<h1>Collect'IF</h1>      
+			<p>{Insérer un slogan ici}</p>
+		  </div>
+		</div>
+		<div class="container-fluid bg-3 text-center"> 
+			<div class="form-group">
+				<label for="mail">Email:</label>
+				<input id='mail' type="text" class="form-control" name='mail'>
+			</div>
+			
+			<button type="button" class="btn" id="connexion">Se connecter</button>
+			<div id='message' style='color: red;'></div>
+			
+			<br/>
+			<p>Pas encore membre ?</p>
+			<button type="button" class="btn" onclick="javascript:location.href='./inscription.html'">INSCRIPTION</button>
+        </div>
         
         <script>
 
