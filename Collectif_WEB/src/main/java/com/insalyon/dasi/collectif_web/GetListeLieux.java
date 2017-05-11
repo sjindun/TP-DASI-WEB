@@ -7,26 +7,23 @@ package com.insalyon.dasi.collectif_web;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import metier.modele.Activite;
-import metier.modele.Adherent;
+import metier.modele.Lieu;
 import metier.service.ServiceMetier;
 
 /**
  *
  * @author Jindun
  */
-public class GetListeActivites extends Action {
+public class GetListeLieux extends Action {
+    
     @Override
     boolean execute(HttpServletRequest request){
-
         
         ServiceMetier servM = new ServiceMetier();
-        List<Activite> activites = servM.getActivites();
+        List<Lieu> lieux = servM.getLieux();
         
-        request.setAttribute("liste", activites);
+        request.setAttribute("liste", lieux);
         return true;
-        
     }
     
 }

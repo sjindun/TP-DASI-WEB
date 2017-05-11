@@ -1,7 +1,12 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
-        <title>Collect'IF - Page d'accueil adhérent</title>
+        <title>Collect'IF - Page d'accueil administrateur</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
@@ -25,20 +30,16 @@
             <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./ActionServlet?todo=deconnexion'"/>
 
         </form>
-        <p>Mes demandes : </p>
+        
         <table id="tableau" style="width:60%">
             <tr>
-                <th>Id Demande</th>
-                <th>Nom Activité</th>
-                <th>Date</th>
-                <th>Lieu affecté ?</th>
+                <th>Id Lieu</th>
+                <th>Adresse Lieu</th>
             </tr>
         </table>
         <div id='message' style='color: red;'></div><br/>
         
-        
-        
-        <script>
+         <script>
             
             
             $(function() {
@@ -47,27 +48,25 @@
                     url: './ActionServlet',
                     type: 'POST',
                     data: {
-                        todo: 'getListeDemandes'
+                        todo: 'getListeLieux'
                     },
                     dataType: 'json'
                 })
                 .done(function(data) {
-                    var demandes = data.demandes;
+                    var lieux = data.lieux;
                     var contenuHtml = "";
                     var i;
-                    for (i = 0; i < demandes.length; i++) {
+                    for (i = 0; i < lieux.length; i++) {
                         contenuHtml += '<tr>'
-                                + '<td>'+ demandes[i].id +'</td>'
-                                + '<td>'+ demandes[i].denomination +'</td>' 
-                                + '<td>'+ demandes[i].date + " - "+  demandes[i].heure +'</td>' 
-                                + '<td>'+ demandes[i].lieu +'</td>' 
+                                + '<td>'+ lieux[i].id +'</td>'
+                                + '<td>'+ lieux[i].adresse +'</td>' 
                                 + '</tr>';
                     }
                     $('#tableau').append(contenuHtml);
                 })
                 .fail(function() {
-                    $('#message').html('ERREUR chargement');
-                    window.location.href = "./index.html ";
+                    $('#message').html('ERREUR Chargement');
+                    window.location.href = "./index.html";
                 })
                 .always(function() {
                     //
@@ -76,7 +75,7 @@
             });
             
         </script>
-        
-        
     </body>
+
+
 </html>

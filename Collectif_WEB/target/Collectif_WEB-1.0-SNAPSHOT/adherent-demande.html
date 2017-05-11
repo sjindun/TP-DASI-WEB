@@ -35,13 +35,13 @@
         
         <p>Moment : </p>
         <select id='moment'>
-            <option value="matin">Matin</option>
-            <option value="apresmidi">Après Midi</option>
-            <option value="soir">Soir</option>
+            <option value="Matin">Matin</option>
+            <option value="Apres Midi">Après Midi</option>
+            <option value="Soir">Soir</option>
         </select>
         
         <input type="button" id="faireunedemande" value="Faire une demande" onclick="faireUneDemande()">
-        
+        <div id='message' style='color: red;'></div><br/>
         <p>Activités : </p>
         <table id="tableau" style="width:60%">
             <tr>
@@ -51,7 +51,7 @@
         </table>
         
         
-        <div id='message' style='color: red;'></div><br/>
+        
         
         
         
@@ -64,7 +64,7 @@
                     type: 'POST',
                     data: {
                         todo: 'enregistrerDemande',
-                        activite: $("#activite").val(),
+                        activite: $("#activite option:selected").text(),
                         date: $("#date").val(),
                         moment: $("#moment").val()
                     },
@@ -72,10 +72,11 @@
                 })
                 .done(function(data) {
                     if(data.substring(0, 7)==="success"){
-                        alert('INSCRIPTION REUSSIE');
-                        window.location.href = "./index.html";
+                        alert('Demande bien enregistrée');
+                        $('#message').html('');
+                        //window.location.href = "./index.html";
                     }else if(data.substring(0,4)==='fail'){
-                        alert('INSCRIPTION IMPOSSIBLE !!!!!');
+                        alert('ERREUR ! Votre demande n\'est pas enregistrée');
                         $('#message').html('ERREUR : veuillez recommencer');
                     }
                 })

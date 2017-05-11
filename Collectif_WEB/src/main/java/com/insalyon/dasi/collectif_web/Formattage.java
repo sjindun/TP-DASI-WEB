@@ -13,6 +13,7 @@ import java.util.List;
 import metier.modele.Activite;
 import metier.modele.Demande;
 import metier.modele.Evenement;
+import metier.modele.Lieu;
 
 /**
  *
@@ -60,6 +61,29 @@ public class Formattage {
 
             JsonObject container = new JsonObject();
             container.add("activites", jsonListe);
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            json = gson.toJson(container);
+        }
+        return json;
+    }
+    
+    String getJsonListeLieux(List<Lieu> lieux){
+        
+        JsonArray jsonListe = new JsonArray();
+        String json = "";
+        
+        if(lieux!=null){
+            for(Lieu lieu : lieux){
+                JsonObject jsonActivite = new JsonObject();
+                jsonActivite.addProperty("id", lieu.getId());
+                jsonActivite.addProperty("adresse", lieu.getAdresse());
+
+                jsonListe.add(jsonActivite);
+            }
+
+            JsonObject container = new JsonObject();
+            container.add("lieux", jsonListe);
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             json = gson.toJson(container);

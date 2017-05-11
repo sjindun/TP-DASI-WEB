@@ -23,7 +23,7 @@
             <input id='accueil' type="button" value='Accueil' onclick="javascript:window.location.reload()"/>
             <input id='demande' type="button" value='Faire Demande' onclick="javascript:location.href='./adherent-demande.html'"/>
             <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./ActionServlet?todo=deconnexion'"/>
-            <!-- TODO : BOUTON DECONNEXION -->
+
         </form>
         <p>Mes demandes : </p>
         <table id="tableau" style="width:60%">
@@ -47,8 +47,7 @@
                     url: './ActionServlet',
                     type: 'POST',
                     data: {
-                        todo: 'getListeDemandes',
-                        idAdherent: getParameterByName('idAdherent')
+                        todo: 'getListeDemandes'
                     },
                     dataType: 'json'
                 })
@@ -67,8 +66,8 @@
                     $('#tableau').append(contenuHtml);
                 })
                 .fail(function() {
-                    $('#message').html('ERREUR : veuillez recommencer');
-                    window.location.href = "./ActionServlet";
+                    $('#message').html('ERREUR chargement');
+                    window.location.href = "./index.html ";
                 })
                 .always(function() {
                     //

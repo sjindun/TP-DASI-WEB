@@ -24,6 +24,7 @@ import metier.modele.Activite;
 import metier.modele.Adherent;
 import metier.modele.Demande;
 import metier.modele.Evenement;
+import metier.modele.Lieu;
 import metier.service.ServiceMetier;
 
 /**
@@ -92,7 +93,21 @@ public class ActionServlet extends HttpServlet {
                 }
                 
                 if("true".equals(estAdmin)){
-                    // todo finir
+                    if("getListeLieux".equals(todo)){
+                        
+                        GetListeLieux gLL = new GetListeLieux();
+                        gLL.execute(request);
+                        List<Lieu> lieux = (List<Lieu>)request.getAttribute("liste");
+                        
+                        Formattage formattage = new Formattage();
+                        String json = formattage.getJsonListeLieux(lieux);
+                        
+                        PrintWriter out=response.getWriter();
+                        response.setContentType("text/html;charset=UTF-8");
+                        out.println(json);
+
+                    }
+                  
                 }else{
                     // todo : Adherent normal
                     if("getListeDemandes".equals(todo)){
@@ -123,16 +138,15 @@ public class ActionServlet extends HttpServlet {
 
                     }else if("enregistrerDemande".equals(todo)){
                         
-                        GetListeActivites gLA = new GetListeActivites();
-                        gLA.execute(request);
-                        List<Activite> activites = (List<Activite>)request.getAttribute("liste");
-                        
-                        Formattage formattage = new Formattage();
-                        String json = formattage.getJsonListeActivites(activites);
+                        EnregistrementDemande eD =new EnregistrementDemande();
                         
                         PrintWriter out=response.getWriter();
                         response.setContentType("text/html;charset=UTF-8");
-                        out.println(json);
+                        if(eD.execute(request)){
+                            out.println("success");
+                        }else{
+                            out.println("fail");
+                        }
 
                     }
                     
@@ -241,7 +255,7 @@ public class ActionServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
-  
+        JpaUtil.init();
     }
 
     @Override
