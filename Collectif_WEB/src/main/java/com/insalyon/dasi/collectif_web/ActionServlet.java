@@ -73,22 +73,25 @@ public class ActionServlet extends HttpServlet {
             // Vérification de la session
             String estAdmin = (String)session.getAttribute("admin");
             if(estAdmin == null){
-                // Redirection vers l'index
+                //this.getServletContext().getRequestDispatcher("index.html").forward(request, response);
+                response.sendRedirect("index.html");
+                System.out.println("index");
             }else if("true".equals(estAdmin)){
                 // todo finir
             }else{
                 // todo : Adherent normal
             }
-            
+            /*
             Adherent sessionAdherent = (Adherent)session.getAttribute("adherent");
             if(sessionAdherent == null){
                 // Redirection vers l'index
-                //this.getServletContext().getRequestDispatcher("/index.html").forward(request, response);
-                response.sendRedirect("/index.html");
+                
+                //response.sendRedirect("/index.html");
                 System.out.println("cc");
             }else{
                 // Autres actions !!
             }
+            */
         }
         
         /**

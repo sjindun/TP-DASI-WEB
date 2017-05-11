@@ -39,7 +39,7 @@
         
         
         <script>
-            /*
+            
             function getParameterByName(name) {
                 return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
             }
@@ -75,13 +75,14 @@
                 })
                 .fail(function() {
                     $('#message').html('ERREUR : veuillez recommencer');
+                    window.location.href = "./index.html";
                 })
                 .always(function() {
                     //
                 });
 
             });
-            */
+            
         </script>
         
         
