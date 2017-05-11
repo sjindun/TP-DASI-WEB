@@ -22,18 +22,20 @@ import metier.service.ServiceMetier;
 public class EnregistrementDemande extends Action{
     @Override
     boolean execute(HttpServletRequest request){
-        System.out.println("la date est "+request.getParameter("date"));
         
         String activite = request.getParameter("activite");
-        System.out.println(activite);
         
         String da = request.getParameter("date");
-        DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.FRENCH);
-        Date date=new Date();
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
+        Date date;
         try{
             date = format.parse(da);
+            Date auj = new Date();
+            if(date.compareTo(auj) < 0){
+                return false;
+            }
         }catch(Exception e){
-            
+            return false;
         }
         
         String moment = request.getParameter("moment");
@@ -43,9 +45,6 @@ public class EnregistrementDemande extends Action{
         
         ServiceMetier servM = new ServiceMetier();
         Demande demande =servM.creerDemande(adherent,activite,date,moment);
-        
-        System.out.println(date);
-        System.out.println(demande);
         
         if(demande==null){
             return false;

@@ -19,17 +19,16 @@
     <body>
         <div class="jumbotron">
             <div class="container text-center">
-                <h1>Collect'IF</h1>      
-                <p>{Insérer un slogan ici}</p>
+                <h1>Collect'IF</h1>
             </div>
         </div>
 		
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4 text-center column"> 
-                <div class="form-group">
+                <form class="form-group" id="formulaire">
                     <label for="mail">Email :</label>
-                    <input id='mail' type="text" class="form-control" name='mail'>
-                </div>
+                    <input id='mail' type="text" class="form-control text-center" name='mail'>
+                </form>
 
                 <button type="button" class="btn btn-primary" id="connexion">Se connecter</button>
                 <div id='message' style='color: red;'></div>
@@ -41,9 +40,10 @@
         </div>
 		
         <script>
-
-            $( "#connexion" ).click(function() {
-                $('#message').html('Connexion..');
+            
+            function seConnecter(){
+                $('#message').html('');
+                $('#connexion').text('Connexion..');
                 $.ajax({
                     url: './ActionServlet',
                     type: 'POST',
@@ -72,10 +72,17 @@
                     $('#message').html('ERREUR Serveur : veuillez recommencer');
                 })
                 .always(function() {
-                    //
+                    $('#connexion').text('Se connecter');
                 });
 
-            });
+            }
+
+            $( "#connexion" ).bind('click', seConnecter);
+            $( "#formulaire" ).submit(function(event){
+                event.preventDefault();
+                seConnecter();
+              });
+            
         </script>
         
         

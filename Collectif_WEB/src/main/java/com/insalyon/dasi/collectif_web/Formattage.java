@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import metier.modele.Activite;
 import metier.modele.Adherent;
@@ -30,7 +31,8 @@ public class Formattage {
                 JsonObject jsonDemande = new JsonObject();
                 jsonDemande.addProperty("id", d.getId());
                 jsonDemande.addProperty("denomination", d.getActivite().getDenomination());
-                jsonDemande.addProperty("date", d.getDate().toString());
+                String date = new SimpleDateFormat("dd/MM/yyyy").format(d.getDate());
+                jsonDemande.addProperty("date", date);
                 jsonDemande.addProperty("heure", d.getMomentJournee());
                 Evenement eve = d.getEvenement();
                 jsonDemande.addProperty("lieu", (eve==null)? "-" : ((eve.getLieu()==null)?"-": eve.getLieu().getDenomination() ));
@@ -104,7 +106,8 @@ public class Formattage {
                 JsonObject jsonActivite = new JsonObject();
                 jsonActivite.addProperty("id", evenement.getId());
                 jsonActivite.addProperty("activite", evenement.getActivite().getDenomination());
-                jsonActivite.addProperty("date", evenement.getDate_evenement().toString());
+                String date = new SimpleDateFormat("dd/MM/yyyy").format(evenement.getDate_evenement());
+                jsonActivite.addProperty("date", date);
                 jsonActivite.addProperty("moment", evenement.getMomentJournee());
                 
                 if(evenement.getLieu()==null){

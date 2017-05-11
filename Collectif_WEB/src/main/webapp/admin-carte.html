@@ -7,7 +7,7 @@
 
         <style>
             #map {
-                height: 500px;
+                height: 600px;
                 width: 100%;
             }
         </style>
@@ -37,17 +37,24 @@
             <div class="row">
                 <div class="col-sm-3 text-center">
                     <br/><br/>
-                    <button id="boutonEnleverLieux" type="button" class="btn margin-bottom-5">Enlever les lieux</button>
-                    <br/> <br/>
-                    <button id="boutonAfficherLieux" type="button" class="btn">Afficher les lieux</button>
-                    <br/> <br/> <br/>
-                    <div class="input-group text-center">
-                            <span class="input-group-addon">ID évènement</span>
-                            <input id="idEvenement" type="text" class="form-control" placeholder="id">
-                    </div>
-                    <br/>
-                    <button id="boutonAfficherParticipants" type="button" class="btn">Afficher les participants</button>
-                    <br/><br/>
+                    <div class="row">
+                        <button id="boutonAfficherLieux" type="button" class="btn btn-primary">Afficher les lieux</button>
+                    </div><br/>
+                    <div class="row">
+                        <button id="boutonEnleverLieux" type="button" class="btn btn-warning">Enlever les lieux</button>
+                    </div><br/><br/>
+                    <div class="row">
+                        <div class="col-s-10 col-xsm-offset-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">ID Évènement</span>
+                                <input id="idEvenement" type="text" class="form-control text-center" placeholder="id"/>
+                            </div>
+                        </div>
+                    </div><br/>
+                    <div class="row">
+                        <button id="boutonAfficherParticipants" type="button" class="btn btn-primary">Afficher les participants</button>
+                    </div><br/>
+                    <div id='message' style='color: red;'></div><br/>
                 </div>
                 <div class="col-sm-9 text-center">
                         <div id="map"></div>
@@ -57,10 +64,12 @@
 
         <script>
             var map;
-            var lyon = {lat: 45.761018, lng: 4.868219};
+            var lyon = {lat: 45.755018, lng: 4.868219};
             var marqueursLieux = [];
             var marqueursParticipants = [];
+            var infowindow=null;
             
+            /*
             function makeInfoWindow(title) {
                 return new google.maps.InfoWindow({
                     content: '<div>Information: ' + title + '</div>'
@@ -74,7 +83,7 @@
                     infowindow.open(map, this);
                 });
             }
-            
+            */
             
             
             function initMap() {
@@ -82,10 +91,22 @@
                     zoom: 13,
                     center: lyon
                 });
-                infowindow = makeInfoWindow('');
+                //infowindow = makeInfoWindow('');
+                infowindow = new google.maps.InfoWindow({
+                    content: ""
+                });
             } 
             
-            
+            function bindInfoWindow(marker, map, infowindow, description) {
+                marker.addListener('click', function() {
+                    infowindow.setContent(description);
+                    infowindow.open(map, this);
+                });
+            }
+                
+
+
+
 
             /*
              * // add a marker
@@ -171,13 +192,12 @@
                 for(j=0; j<tab.length; j++){
                     var marker = new google.maps.Marker({
                         position: {lat: tab[j].latitude, lng: tab[j].longitude},
-                        title: tab[j].id + ' : ' + tab[j].denomination
+                        title: tab[j].denomination + ' (id='+tab[j].id+')'
                     });
                     marker.setMap(map);
-                    marker.addListener('click', function() {
-                        infowindow.setContent('<div>'+ marker.title + '</div>');
-                        infowindow.open(map, marker);
-                    });
+                    
+                    var content = '<div>'+ marker.title + '</div>';
+                    bindInfoWindow(marker, map, infowindow, content);  
                     
                     marqueursLieux.push(marker);
                 }
@@ -195,21 +215,18 @@
                         icon: {url: './images/user.png', scaledSize: new google.maps.Size(32, 32)}
                     });
                     marker.setMap(map);
-                    marker.addListener('click', function() {
-                        infowindow.setContent('<div>' + marker.title + '</div>');
-                        infowindow.open(map, marker);
-                    });
+                    
+                    var content = '<div>' + marker.title + '</div>';
+                    bindInfoWindow(marker, map, infowindow, content); 
+                    
                     marqueursParticipants.push(marker);
                 }
                 
-                for(j=0; j<tab.length; j++){
-                    marqueursParticipants[j].addListener('click', function() {
-                        infowindow.setContent('<div>' + marqueursParticipants[j].title + '</div>');
-                        infowindow.open(map, marqueursParticipants[j]);
-                    });
-                }
-                
             }
+            
+            
+            
+            
             
 
         </script>

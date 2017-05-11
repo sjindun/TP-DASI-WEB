@@ -9,17 +9,6 @@ and open the template in the editor.
         <title>Collect'IF - Page d'accueil administrateur</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width">
-        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
-        
-        <style>
-            table {
-                border-collapse: collapse;
-            }
-            th, td {
-                 border-bottom: 1px solid #ddd;
-            }
-            tr:nth-child(even) {background-color: #f2f2f2}
-        </style>
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -42,42 +31,69 @@ and open the template in the editor.
             </div>
 	</nav>
         
-        
-        <form>
-            id Evenement : <input id='idEvenement' type="text" name='idEvenement'/><br/><br/>
-            id Lieu: <input id='idLieu' type="text" name='idLieu'/><br/><br/>
-            <input id='affecterLieu' type="button" value='Affecter Lieu'/>
-        </form>
-        
-        <form>
-            id Evenement : <input id='idEvenement2' type="text" name='idEvenement'/><br/><br/>
-            PAF: <input id='paf' type="text" name='paf'/><br/><br/>
-            <input id='affecterPAF' type="button" value='Affecter PAF'/>
-        </form>
-        
-        <table id="tableau" style="width:60%">
-            <tr>
-                <th>Id Lieu</th>
-                <th>Adresse Lieu</th>
-            </tr>
-        </table>
-        <br/>
-        <table id="tableau2" style="width:60%">
-            <tr>
-                <th>Id Evenement</th>
-                <th>Nom Activité</th>
-                <th>Date et moment</th>
-                <th>Lieu</th>
-                <th>PAF</th>
-            </tr>
-        </table>
+        <div class="container">
+            
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">ID Évènement</span>
+                        <input id="idEvenement" type="text" class="form-control text-center" placeholder="id"/>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">ID lieu</span>
+                        <input id="idLieu" type="text" class="form-control text-center" placeholder="id"/>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button id="affecterLieu" type="button" class="btn btn-primary">Affecter Lieu</button>
+                </div>
+                
+                <div class="col-sm-3 col-sm-offset-1">
+                    <div class="input-group">
+                        <span class="input-group-addon">ID Évènement</span>
+                        <input id="idEvenement2" type="text" class="form-control text-center" placeholder="id"/>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">PAF</span>
+                        <input id="paf" type="text" class="form-control text-center" placeholder="€"/>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button id="affecterPAF" type="button" class="btn btn-primary">Affecter PAF</button>
+                </div>
+            </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col-sm-5 text-center">
+                    <table id="tableau" class="table-striped" style="width:100%">
+                        <tr>
+                            <th class="text-center">ID Lieu</th>
+                            <th class="text-center">Adresse Lieu</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-7 text-center">
+                    <table id="tableau2" class="table-striped" style="width:100%">
+                        <tr>
+                            <th class="text-center">ID Évènement</th>
+                            <th class="text-center">Activité</th>
+                            <th class="text-center">Date - Moment</th>
+                            <th class="text-center">Lieu</th>
+                            <th class="text-center">PAF</th>
+                        </tr>
+                    </table>
+                </div>
+                
+                
+            </div>
+        </div>
+
         <div id='message' style='color: red;'></div><br/>
         
          <script>
             
             
             $(function() {
-                //window.location.href = "./ActionServlet";
                 $.ajax({
                     url: './ActionServlet',
                     type: 'POST',
