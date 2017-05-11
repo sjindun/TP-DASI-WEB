@@ -363,6 +363,7 @@ public class ServiceMetier {
                 } catch (IOException ex) {
                     Logger.getLogger(ServiceMetier.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 System.out.println(aAffecter);
             }
         } else {

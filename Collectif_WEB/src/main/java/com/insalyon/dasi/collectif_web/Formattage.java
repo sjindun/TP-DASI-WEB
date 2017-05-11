@@ -91,4 +91,40 @@ public class Formattage {
         return json;
     }
     
+    String getJsonListeEvenements(List<Evenement> ev){
+        
+        JsonArray jsonListe = new JsonArray();
+        String json = "";
+        
+        if(ev!=null){
+            for(Evenement evenement : ev){
+                JsonObject jsonActivite = new JsonObject();
+                jsonActivite.addProperty("id", evenement.getId());
+                jsonActivite.addProperty("activite", evenement.getActivite().getDenomination());
+                jsonActivite.addProperty("date", evenement.getDate_evenement().toString());
+                jsonActivite.addProperty("moment", evenement.getMomentJournee());
+                
+                if(evenement.getLieu()==null){
+                    jsonActivite.addProperty("lieu", "-");
+                }else{
+                    jsonActivite.addProperty("lieu", evenement.getLieu().getDenomination());
+                }
+                if(evenement.getCotisation()==-1){
+                    jsonActivite.addProperty("paf", "free");
+                }else{
+                    jsonActivite.addProperty("paf",evenement.getCotisation());
+                }
+
+                jsonListe.add(jsonActivite);
+            }
+
+            JsonObject container = new JsonObject();
+            container.add("evenements", jsonListe);
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            json = gson.toJson(container);
+        }
+        return json;
+    }
+    
 }

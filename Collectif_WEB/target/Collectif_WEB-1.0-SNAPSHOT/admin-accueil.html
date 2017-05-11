@@ -21,20 +21,54 @@ and open the template in the editor.
             tr:nth-child(even) {background-color: #f2f2f2}
         </style>
         
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         
     </head>
     <body>
+        <nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">Administrateur</a>
+				</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="./admin-accueil.html">Accueil</a></li>
+				<li><a href="admin-carte.html">Carte</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="./ActionServlet?todo=deconnexion"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+			</ul>
+			</div>
+	</nav>
+        
+        
         <form>
-            <input id='accueil' type="button" value='Accueil' onclick="javascript:window.location.reload()"/>
-            <input id='demande' type="button" value='Faire Demande' onclick="javascript:location.href='./adherent-demande.html'"/>
-            <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./ActionServlet?todo=deconnexion'"/>
-
+            id Evenement : <input id='idEvenement' type="text" name='idEvenement'/><br/><br/>
+            id Lieu: <input id='idLieu' type="text" name='idLieu'/><br/><br/>
+            <input id='affecterLieu' type="button" value='Affecter Lieu'/>
+        </form>
+        
+        <form>
+            id Evenement : <input id='idEvenement2' type="text" name='idEvenement'/><br/><br/>
+            PAF: <input id='paf' type="text" name='paf'/><br/><br/>
+            <input id='affecterPAF' type="button" value='Affecter PAF'/>
         </form>
         
         <table id="tableau" style="width:60%">
             <tr>
                 <th>Id Lieu</th>
                 <th>Adresse Lieu</th>
+            </tr>
+        </table>
+        <br/>
+        <table id="tableau2" style="width:60%">
+            <tr>
+                <th>Id Evenement</th>
+                <th>Nom Activité</th>
+                <th>Date et moment</th>
+                <th>Lieu</th>
+                <th>PAF</th>
             </tr>
         </table>
         <div id='message' style='color: red;'></div><br/>
@@ -66,7 +100,102 @@ and open the template in the editor.
                 })
                 .fail(function() {
                     $('#message').html('ERREUR Chargement');
-                    window.location.href = "./index.html";
+                    alert('ERREUR lors du chargement de la page');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+            
+            $(function() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'getListeEvenements'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var ev = data.evenements;
+                    var contenuHtml = "";
+                    var i;
+                    for (i = 0; i < ev.length; i++) {
+                        contenuHtml += '<tr>'
+                                + '<td>'+ ev[i].id +'</td>'
+                                + '<td>'+ ev[i].activite +'</td>' 
+                                + '<td>'+ ev[i].date+' - '+ ev[i].moment+'</td>' 
+                                + '<td>'+ ev[i].lieu +'</td>' 
+                                + '<td>'+ ev[i].paf +'</td>' 
+                                + '</tr>';
+                    }
+                    $('#tableau2').append(contenuHtml);
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR Chargement');
+                    alert('ERREUR lors du chargement de la page');
+                    //window.location.href = "./index.html";
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+            
+            $( "#affecterLieu" ).click(function() {
+                $('#message').html('Enregistrement en cours..');
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'affecterLieu',
+                        idEvenement: $("#idEvenement").val(),
+                        idLieu: $("#idLieu").val()
+                    },
+                    dataType: 'text'
+                })
+                .done(function(data) {
+                    if(data.substring(0, 7)==="success"){
+                        alert('Lieu correctement affecté');
+                        window.location.reload();
+                    }else if(data.substring(0,4)==='fail'){
+                        alert('ERREUR ! L\'affectation a échoué');
+                        $('#message').html('ERREUR : veuillez recommencer');
+                    }
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR Serveur : veuillez recommencer');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+            
+            $( "#affecterPAF" ).click(function() {
+                $('#message').html('Enregistrement en cours..');
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'affecterPAF',
+                        idEvenement: $("#idEvenement2").val(),
+                        paf: $("#paf").val()
+                    },
+                    dataType: 'text'
+                })
+                .done(function(data) {
+                    if(data.substring(0, 7)==="success"){
+                        alert('PAF correctement affecté');
+                        window.location.reload();
+                    }else if(data.substring(0,4)==='fail'){
+                        alert('ERREUR ! L\'affectation a échoué');
+                        $('#message').html('ERREUR : veuillez recommencer');
+                    }
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR Serveur : veuillez recommencer');
                 })
                 .always(function() {
                     //

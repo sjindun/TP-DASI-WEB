@@ -106,6 +106,43 @@ public class ActionServlet extends HttpServlet {
                         response.setContentType("text/html;charset=UTF-8");
                         out.println(json);
 
+                    }else if("getListeEvenements".equals(todo)){
+                        
+                        GetListeEvenements gLE = new GetListeEvenements();
+                        gLE.execute(request);
+                        List<Evenement> ev = (List<Evenement>)request.getAttribute("liste");
+                        
+                        Formattage formattage = new Formattage();
+                        String json = formattage.getJsonListeEvenements(ev);
+                        
+                        PrintWriter out=response.getWriter();
+                        response.setContentType("text/html;charset=UTF-8");
+                        out.println(json);
+
+                    }else if("affecterLieu".equals(todo)){
+            
+                        AffectationLieu aL = new AffectationLieu();
+            
+                        PrintWriter out=response.getWriter();
+                        response.setContentType("text/html;charset=UTF-8");
+                        if(aL.execute(request)){
+                            out.println("success");
+                        }else{
+                            out.println("fail");
+                        }
+            
+                    }else if("affecterPAF".equals(todo)){
+            
+                        AffectationPAF aP = new AffectationPAF();
+            
+                        PrintWriter out=response.getWriter();
+                        response.setContentType("text/html;charset=UTF-8");
+                        if(aP.execute(request)){
+                            out.println("success");
+                        }else{
+                            out.println("fail");
+                        }
+            
                     }
                   
                 }else{
