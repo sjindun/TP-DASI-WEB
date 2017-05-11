@@ -21,20 +21,23 @@
 			<p>{Insérer un slogan ici}</p>
 		  </div>
 		</div>
-		<div class="container-fluid bg-3 text-center"> 
-			<div class="form-group">
-				<label for="mail">Email:</label>
-				<input id='mail' type="text" class="form-control" name='mail'>
+		
+		<div class="row">
+			<div class="col-sm-4 col-sm-offset-4 text-center column"> 
+				<div class="form-group">
+					<label for="mail">Email:</label>
+					<input id='mail' type="text" class="form-control" name='mail'>
+				</div>
+				
+				<button type="button" class="btn btn-primary" id="connexion">Se connecter</button>
+				<div id='message' style='color: red;'></div>
+				
+				<br/><br/><br/>
+				<b>Pas encore membre ?</b><br/>
+				<button type="button" class="btn btn-info" onclick="javascript:location.href='./inscription.html'">INSCRIPTION</button>
 			</div>
-			
-			<button type="button" class="btn" id="connexion">Se connecter</button>
-			<div id='message' style='color: red;'></div>
-			
-			<br/>
-			<p>Pas encore membre ?</p>
-			<button type="button" class="btn" onclick="javascript:location.href='./i nscription.html'">INSCRIPTION</button>
         </div>
-        
+		
         <script>
 
             $( "#connexion" ).click(function() {
