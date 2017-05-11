@@ -6,6 +6,7 @@ package com.insalyon.dasi.collectif_web;
  * and open the template in the editor.
  */
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -142,6 +143,21 @@ public class ActionServlet extends HttpServlet {
                         }else{
                             out.println("fail");
                         }
+            
+                    }
+                    else if("getLieuxParticipants".equals(todo)){
+            
+                        GetListeParticipants gLP = new GetListeParticipants();
+            
+                        gLP.execute(request);
+                        List<Adherent> ad = (List<Adherent>)request.getAttribute("liste");
+                        
+                        Formattage formattage = new Formattage();
+                        String json = formattage.getJsonListePositionParticipants(ad);
+                        
+                        PrintWriter out=response.getWriter();
+                        response.setContentType("text/html;charset=UTF-8");
+                        out.println(json);
             
                     }
                   

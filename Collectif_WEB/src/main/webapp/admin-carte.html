@@ -46,7 +46,7 @@
 						<input id="idEvenement" type="text" class="form-control" placeholder="id">
 					</div>
 					<br/>
-					<button id="boutonAfficherEvenements" type="button" class="btn">Afficher les participants</button>
+					<button id="boutonAfficherParticipants" type="button" class="btn">Afficher les participants</button>
 					<br/><br/>
 				</div>
 				<div class="col-sm-9 text-center">
@@ -70,6 +70,35 @@
 					map: map
 				});
 			 }
+                         
+                         
+                         
+                         
+                         
+                         
+            $( "#boutonAfficherParticipants" ).click(function() {
+                $('#message').html('Chargement des positions ..');
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'getLieuxParticipants',
+                        idEvenement: $("#idEvenement").val(),
+                    },
+                    dataType: 'text'
+                })
+                .done(function(data) {
+                    // PAR RAPPORT A LA CARTE
+                    
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR Serveur : veuillez recommencer');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
 			
         </script>
 		

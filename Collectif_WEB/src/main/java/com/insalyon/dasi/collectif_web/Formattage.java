@@ -11,6 +11,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.List;
 import metier.modele.Activite;
+import metier.modele.Adherent;
 import metier.modele.Demande;
 import metier.modele.Evenement;
 import metier.modele.Lieu;
@@ -120,6 +121,32 @@ public class Formattage {
 
             JsonObject container = new JsonObject();
             container.add("evenements", jsonListe);
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            json = gson.toJson(container);
+        }
+        return json;
+    }
+    
+    
+    String getJsonListePositionParticipants(List<Adherent> ads){
+        
+        JsonArray jsonListe = new JsonArray();
+        String json = "";
+        
+        if(ads!=null){
+            for(Adherent ad : ads){
+                JsonObject jsonActivite = new JsonObject();
+                jsonActivite.addProperty("latitude", ad.getLatitude());
+                jsonActivite.addProperty("longitude", ad.getLongitude());
+                jsonActivite.addProperty("nom", ad.getNom());
+                jsonActivite.addProperty("prenom", ad.getPrenom());
+
+                jsonListe.add(jsonActivite);
+            }
+
+            JsonObject container = new JsonObject();
+            container.add("adherents", jsonListe);
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             json = gson.toJson(container);
