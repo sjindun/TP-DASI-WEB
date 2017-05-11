@@ -79,7 +79,9 @@ public class Formattage {
                 JsonObject jsonActivite = new JsonObject();
                 jsonActivite.addProperty("id", lieu.getId());
                 jsonActivite.addProperty("adresse", lieu.getAdresse());
-
+                jsonActivite.addProperty("denomination", lieu.getDenomination());
+                jsonActivite.addProperty("latitude", lieu.getLatitude());
+                jsonActivite.addProperty("longitude", lieu.getLongitude());
                 jsonListe.add(jsonActivite);
             }
 
@@ -146,7 +148,7 @@ public class Formattage {
             }
 
             JsonObject container = new JsonObject();
-            container.add("adherents", jsonListe);
+            container.add("participants", jsonListe);
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             json = gson.toJson(container);

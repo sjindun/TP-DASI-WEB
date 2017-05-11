@@ -1,95 +1,121 @@
 ﻿<!DOCTYPE html>
 <html>
-	<head>
-		<title>Collect'IF - Page de visualisation - Administrateur</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width">
-		
-		<style>
+    <head>
+        <title>Collect'IF - Page de visualisation - Administrateur</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+
+        <style>
             #map {
-				height: 500px;
-				width: 100%;
-			}
+                height: 500px;
+                width: 100%;
+            }
         </style>
-		
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		
-		
-	</head>
-	<body>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">Administrateur</a>
-				</div>
-			<ul class="nav navbar-nav">
-				<li><a href="./admin-accueil.html">Accueil</a></li>
-				<li class="active"><a href="admin-carte.html">Carte</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="./ActionServlet?todo=deconnexion"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
-			</ul>
-			</div>
-		</nav><br>
 
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-3 text-center">
-					<button id="boutonEnleverLieux" type="button" class="btn margin-bottom-5">Enlever les lieux</button>
-					<br/> <br/>
-					<button id="boutonAfficherLieux" type="button" class="btn">Afficher les lieux</button>
-					<br/> <br/> <br/>
-					<div class="input-group text-center">
-						<span class="input-group-addon">ID évènement</span>
-						<input id="idEvenement" type="text" class="form-control" placeholder="id">
-					</div>
-					<br/>
-					<button id="boutonAfficherParticipants" type="button" class="btn">Afficher les participants</button>
-					<br/><br/>
-				</div>
-				<div class="col-sm-9 text-center">
-					<div id="map"></div>
-				</div>
-			</div>
-		</div>
-		
-		<script type="text/javascript">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Administrateur</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="./admin-accueil.html">Accueil</a></li>
+                    <li class="active"><a href="admin-carte.html">Carte</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="./ActionServlet?todo=deconnexion"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+                </ul>
+            </div>
+        </nav><br>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 text-center">
+                    <br/><br/>
+                    <button id="boutonEnleverLieux" type="button" class="btn margin-bottom-5">Enlever les lieux</button>
+                    <br/> <br/>
+                    <button id="boutonAfficherLieux" type="button" class="btn">Afficher les lieux</button>
+                    <br/> <br/> <br/>
+                    <div class="input-group text-center">
+                            <span class="input-group-addon">ID évènement</span>
+                            <input id="idEvenement" type="text" class="form-control" placeholder="id">
+                    </div>
+                    <br/>
+                    <button id="boutonAfficherParticipants" type="button" class="btn">Afficher les participants</button>
+                    <br/><br/>
+                </div>
+                <div class="col-sm-9 text-center">
+                        <div id="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
             var map;
+            var lyon = {lat: 45.761018, lng: 4.868219};
+            var marqueursLieux = [];
+            var marqueursParticipants = [];
+            
+            function makeInfoWindow(title) {
+                return new google.maps.InfoWindow({
+                    content: '<div>Information: ' + title + '</div>'
+                });
+            }
 
-			function initMap() {
-				var lyon = {lat: 45.761018, lng: 4.868219};
-				map = new google.maps.Map(document.getElementById('map'), {
-					zoom: 12,
-					center: lyon
-				});
-				var marker = new google.maps.Marker({
-					position: lyon,
-					map: map
-				});
-			 }
-                         
-                         
-                         
-                         
-                         
-                         
-            $( "#boutonAfficherParticipants" ).click(function() {
-                $('#message').html('Chargement des positions ..');
+            function attachInfoWindow(marker, infowindow, htmlDescription) {
+                marker.addListener('click', function() {
+
+                    infowindow.setContent(htmlDescription);
+                    infowindow.open(map, this);
+                });
+            }
+            
+            
+            
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 13,
+                    center: lyon
+                });
+                infowindow = makeInfoWindow('');
+            } 
+            
+            
+
+            /*
+             * // add a marker
+            var marker = new google.maps.Marker({
+                    position: lyon,
+                    title: "Lyon"
+            });
+            marker.setMap(map);
+            */
+
+            
+            $( "#boutonEnleverLieux" ).click(function() {
+                $('#message').html('');
+                supprimerMarqueurs(marqueursLieux);
+            });
+            
+            $( "#boutonAfficherLieux" ).click(function() {
+                $('#message').html('Chargement des lieux ..');
                 $.ajax({
                     url: './ActionServlet',
                     type: 'POST',
                     data: {
-                        todo: 'getLieuxParticipants',
-                        idEvenement: $("#idEvenement").val(),
+                        todo: 'getListeLieux'
                     },
-                    dataType: 'text'
+                    dataType: 'json'
                 })
                 .done(function(data) {
-                    // PAR RAPPORT A LA CARTE
-                    
+                    var lieux = data.lieux;
+                    majMarqueursLieux(lieux);
+                    $('#message').html('');
                 })
                 .fail(function() {
                     $('#message').html('ERREUR Serveur : veuillez recommencer');
@@ -99,12 +125,97 @@
                 });
 
             });
-			
+            
+            
+            $( "#boutonAfficherParticipants" ).click(function() {
+                $('#message').html('Chargement des participants ..');
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'getLieuxParticipants',
+                        idEvenement: $("#idEvenement").val(),
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var participants = data.participants;
+                    majMarqueursParticipants(participants);
+                    $('#message').html('');
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR Serveur : veuillez recommencer');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+            
+            
+            
+            function supprimerMarqueurs(marqueurs){
+                if(marqueurs!=null){
+                    var i;
+                    for(i=0; i<marqueurs.length; i++){
+                        marqueurs[i].setMap(null);
+                    }
+                }
+            }
+            
+            function majMarqueursLieux(tab){
+                supprimerMarqueurs(marqueursLieux);
+                marqueursLieux = [];
+                
+                var j;
+                for(j=0; j<tab.length; j++){
+                    var marker = new google.maps.Marker({
+                        position: {lat: tab[j].latitude, lng: tab[j].longitude},
+                        title: tab[j].id + ' : ' + tab[j].denomination
+                    });
+                    marker.setMap(map);
+                    marker.addListener('click', function() {
+                        infowindow.setContent('<div>'+ marker.title + '</div>');
+                        infowindow.open(map, marker);
+                    });
+                    
+                    marqueursLieux.push(marker);
+                }
+            }
+            
+            function majMarqueursParticipants(tab){
+                supprimerMarqueurs(marqueursParticipants);
+                marqueursParticipants=[];
+                
+                var j;
+                for(j=0; j<tab.length; j++){
+                    var marker = new google.maps.Marker({
+                        position: {lat: tab[j].latitude, lng: tab[j].longitude},
+                        title: tab[j].nom + ' ' + tab[j].prenom,
+                        icon: {url: './images/user.png', scaledSize: new google.maps.Size(32, 32)}
+                    });
+                    marker.setMap(map);
+                    marker.addListener('click', function() {
+                        infowindow.setContent('<div>' + marker.title + '</div>');
+                        infowindow.open(map, marker);
+                    });
+                    marqueursParticipants.push(marker);
+                }
+                
+                for(j=0; j<tab.length; j++){
+                    marqueursParticipants[j].addListener('click', function() {
+                        infowindow.setContent('<div>' + marqueursParticipants[j].title + '</div>');
+                        infowindow.open(map, marqueursParticipants[j]);
+                    });
+                }
+                
+            }
+            
+
         </script>
-		
+
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAklw96N9rLd93ubr-F04CN7qi2ryKayAc&callback=initMap">
         </script>
-		
-		
-	</body>
+
+    </body>
 </html>

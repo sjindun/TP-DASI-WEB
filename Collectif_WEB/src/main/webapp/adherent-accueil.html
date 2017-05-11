@@ -4,50 +4,48 @@
         <title>Collect'IF - Page d'accueil adhérent</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width">
-        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
         
-        <style>
-            table {
-                border-collapse: collapse;
-            }
-            th, td {
-                 border-bottom: 1px solid #ddd;
-            }
-            tr:nth-child(even) {background-color: #f2f2f2}
-        </style>
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  
-        
+        <style>
+            table{ width: 100%; }
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">Adherent</a>
-				</div>
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="./adherent-accueil.html">Accueil</a></li>
-				<li><a href="adherent-demande.html">Faire une demande</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="./ActionServlet?todo=deconnexion"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
-			</ul>
-			</div>
+            <div class="container-fluid">
+                    <div class="navbar-header">
+                            <a class="navbar-brand">Adhérent</a>
+                    </div>
+            <ul class="nav navbar-nav">
+                    <li class="active"><a href="./adherent-accueil.html">Accueil</a></li>
+                    <li><a href="adherent-demande.html">Faire une demande</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                    <li><a href="./ActionServlet?todo=deconnexion"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+            </ul>
+            </div>
 	</nav>
         
 
-        <p>Mes demandes : </p>
-        <table id="tableau" style="width:60%">
-            <tr>
-                <th>Id Demande</th>
-                <th>Nom Activité</th>
-                <th>Date</th>
-                <th>Lieu affecté ?</th>
-            </tr>
-        </table>
-        <div id='message' style='color: red;'></div><br/>
+        <div class="container text-center">
+            <h1>Mes demandes</h1>
+            <br/>
+        </div>
+        
+        <div class="container">
+            <table id="tableau" class="table-striped">
+                <tr>
+                    <th>Id Demande</th>
+                    <th>Nom Activité</th>
+                    <th>Date</th>
+                    <th>Lieu affecté ?</th>
+                </tr>
+            </table>
+        </div>
+        
         
         
         
