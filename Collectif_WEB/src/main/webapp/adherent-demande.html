@@ -20,9 +20,9 @@
     </head>
     <body>
         <form>
-            <input id='accueil' type="button" value='Accueil' onclick="accederPageAccueil()"/>
+            <input id='accueil' type="button" value='Accueil' onclick="javascript:location.href='./adherent-accueil.html'"/>
             <input id='demande' type="button" value='Faire Demande' onclick="javascript:window.location.reload()"/>
-            <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./index.html'"/>
+            <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./ActionServlet?todo=deconnexion'"/>
             <!-- TODO : BOUTON DECONNEXION -->
         </form>
         
@@ -31,16 +31,16 @@
         </select>
         
         <p>Date : </p>
-        <input type='date' name='date'>
+        <input type='date' id='date' name='date'>
         
         <p>Moment : </p>
-        <select>
+        <select id='moment'>
             <option value="matin">Matin</option>
             <option value="apresmidi">Après Midi</option>
             <option value="soir">Soir</option>
         </select>
         
-        <input type="button" name="faireunedemande" value="Faire une demande" onclick="javascript:location.href='./inscription.html'">
+        <input type="button" id="faireunedemande" value="Faire une demande" onclick="faireUneDemande()">
         
         <p>Activités : </p>
         <table id="tableau" style="width:60%">
@@ -57,18 +57,36 @@
         
         <script>
             
-            function getParameterByName(name) {
-                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-            }
-            
-            function accederPageAccueil(){
-                var url = './adherent-accueil.html?idAdherent=' +  getParameterByName('idAdherent');
-                location.href= url;
-            }
-            
-            function faireUneDemande(){
-               //TODO : Coder la demande  
-            }
+            $( "#faireunedemande" ).click(function() {
+                $('#message').html('Enregistrement de la demande ..');
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'enregistrerDemande',
+                        activite: $("#activite").val(),
+                        date: $("#date").val(),
+                        moment: $("#moment").val()
+                    },
+                    dataType: 'text'
+                })
+                .done(function(data) {
+                    if(data.substring(0, 7)==="success"){
+                        alert('INSCRIPTION REUSSIE');
+                        window.location.href = "./index.html";
+                    }else if(data.substring(0,4)==='fail'){
+                        alert('INSCRIPTION IMPOSSIBLE !!!!!');
+                        $('#message').html('ERREUR : veuillez recommencer');
+                    }
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR Serveur : veuillez recommencer');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
             
             $(function() {
                 $.ajax({
@@ -97,6 +115,7 @@
                 })
                 .fail(function() {
                     $('#message').html('ERREUR : veuillez recommencer');
+                    window.location.href = "./ActionServlet";
                 })
                 .always(function() {
                     //

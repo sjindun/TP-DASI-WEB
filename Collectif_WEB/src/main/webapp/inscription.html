@@ -38,10 +38,11 @@
                         window.location.href = "./index.html";
                     }else if(data.substring(0,4)==='fail'){
                         alert('INSCRIPTION IMPOSSIBLE !!!!!');
+                        $('#message').html('ERREUR : veuillez recommencer');
                     }
                 })
                 .fail(function() {
-                    $('#message').html('ERREUR : veuillez recommencer');
+                    $('#message').html('ERREUR Serveur : veuillez recommencer');
                 })
                 .always(function() {
                     //

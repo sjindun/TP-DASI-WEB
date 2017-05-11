@@ -40,6 +40,8 @@
                     }else if(data.indexOf('success')===0){
                         window.location.href = "./adherent-accueil.html";
                         //window.location.href = "./adherent-accueil.html?idAdherent=" + data.substring(0,data.indexOf('\n'));
+                    }else if(data.indexOf('admin')===0){
+                        window.location.href = "./admin-accueil.html";
                     }else{
                         $('#message').html('ERREUR : veuillez recommencer');
                         console.log("data = " + data);
@@ -47,7 +49,7 @@
                    
                 })
                 .fail(function() {
-                    $('#message').html('ERREUR : veuillez recommencer');
+                    $('#message').html('ERREUR Serveur : veuillez recommencer');
                 })
                 .always(function() {
                     //

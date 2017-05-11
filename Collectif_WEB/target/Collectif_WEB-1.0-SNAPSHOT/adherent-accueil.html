@@ -21,8 +21,8 @@
     <body>
         <form>
             <input id='accueil' type="button" value='Accueil' onclick="javascript:window.location.reload()"/>
-            <input id='demande' type="button" value='Faire Demande' onclick="accederPageDemande()"/>
-            <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./index.html'"/>
+            <input id='demande' type="button" value='Faire Demande' onclick="javascript:location.href='./adherent-demande.html'"/>
+            <input id='deconnexion' type="button" value='Déconnexion' onclick="javascript:location.href='./ActionServlet?todo=deconnexion'"/>
             <!-- TODO : BOUTON DECONNEXION -->
         </form>
         <p>Mes demandes : </p>
@@ -40,16 +40,9 @@
         
         <script>
             
-            function getParameterByName(name) {
-                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-            }
-            
-            function accederPageDemande(){
-                var url = './adherent-demande.html?idAdherent=' +  getParameterByName('idAdherent');
-                location.href= url;
-            }
             
             $(function() {
+                //window.location.href = "./ActionServlet";
                 $.ajax({
                     url: './ActionServlet',
                     type: 'POST',
@@ -75,7 +68,7 @@
                 })
                 .fail(function() {
                     $('#message').html('ERREUR : veuillez recommencer');
-                    window.location.href = "./index.html";
+                    window.location.href = "./ActionServlet";
                 })
                 .always(function() {
                     //
