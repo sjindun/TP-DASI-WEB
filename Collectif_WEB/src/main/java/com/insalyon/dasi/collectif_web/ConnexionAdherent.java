@@ -5,7 +5,6 @@
  */
 package com.insalyon.dasi.collectif_web;
 
-import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import metier.modele.Adherent;

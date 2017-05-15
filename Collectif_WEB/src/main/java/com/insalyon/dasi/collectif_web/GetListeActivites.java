@@ -7,9 +7,7 @@ package com.insalyon.dasi.collectif_web;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import metier.modele.Activite;
-import metier.modele.Adherent;
 import metier.service.ServiceMetier;
 
 /**

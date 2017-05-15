@@ -47,7 +47,7 @@
                         <div class="col-s-10 col-xsm-offset-2">
                             <div class="input-group">
                                 <span class="input-group-addon">ID Évènement</span>
-                                <input id="idEvenement" type="text" class="form-control text-center" placeholder="id"/>
+                                <input id="idEvenement" type="number" min="0" class="form-control text-center" placeholder="id"/>
                             </div>
                         </div>
                     </div><br/>
@@ -84,6 +84,32 @@
                 });
             }
             */
+            
+            
+            $(function() {
+                //window.location.href = "./ActionServlet";
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        todo: 'getListeLieux'
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    
+                })
+                .fail(function() {
+                    $('#message').html('ERREUR chargement');
+                    window.location.href = "./ActionServlet";
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+            
+            
             
             
             function initMap() {
@@ -124,7 +150,8 @@
             });
             
             $( "#boutonAfficherLieux" ).click(function() {
-                $('#message').html('Chargement des lieux ..');
+                $( "#boutonAfficherLieux" ).text('Chargement..');
+                $('#message').html('');
                 $.ajax({
                     url: './ActionServlet',
                     type: 'POST',
@@ -142,14 +169,15 @@
                     $('#message').html('ERREUR Serveur : veuillez recommencer');
                 })
                 .always(function() {
-                    //
+                    $( "#boutonAfficherLieux" ).text('Afficher les lieux');
                 });
 
             });
             
             
             $( "#boutonAfficherParticipants" ).click(function() {
-                $('#message').html('Chargement des participants ..');
+                $('#message').html('');
+                $('#boutonAfficherParticipants').text('Chargement..');
                 $.ajax({
                     url: './ActionServlet',
                     type: 'POST',
@@ -168,7 +196,7 @@
                     $('#message').html('ERREUR Serveur : veuillez recommencer');
                 })
                 .always(function() {
-                    //
+                    $('#boutonAfficherParticipants').text('Afficher les participants');
                 });
 
             });
@@ -211,7 +239,7 @@
                 for(j=0; j<tab.length; j++){
                     var marker = new google.maps.Marker({
                         position: {lat: tab[j].latitude, lng: tab[j].longitude},
-                        title: tab[j].nom + ' ' + tab[j].prenom,
+                        title: tab[j].prenom + ' ' + tab[j].nom,
                         icon: {url: './images/user.png', scaledSize: new google.maps.Size(32, 32)}
                     });
                     marker.setMap(map);

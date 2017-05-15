@@ -37,11 +37,11 @@ and open the template in the editor.
                 <div class="col-sm-3">
                     <div class="input-group">
                         <span class="input-group-addon">ID Évènement</span>
-                        <input id="idEvenement" type="text" class="form-control text-center" placeholder="id"/>
+                        <input id="idEvenement" type="number" min="0" class="form-control text-center" placeholder="id"/>
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon">ID lieu</span>
-                        <input id="idLieu" type="text" class="form-control text-center" placeholder="id"/>
+                        <input id="idLieu" type="number" min="0" class="form-control text-center" placeholder="id"/>
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -51,11 +51,11 @@ and open the template in the editor.
                 <div class="col-sm-3 col-sm-offset-1">
                     <div class="input-group">
                         <span class="input-group-addon">ID Évènement</span>
-                        <input id="idEvenement2" type="text" class="form-control text-center" placeholder="id"/>
+                        <input id="idEvenement2" type="number" min="0" class="form-control text-center" placeholder="id"/>
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon">PAF</span>
-                        <input id="paf" type="text" class="form-control text-center" placeholder="€"/>
+                        <input id="paf" type="number" min="0" class="form-control text-center" placeholder="€"/>
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -71,6 +71,8 @@ and open the template in the editor.
                             <th class="text-center">Adresse Lieu</th>
                         </tr>
                     </table>
+                    <br/>
+                    <div id='message' style='color: red;'></div><br/>
                 </div>
                 <div class="col-sm-7 text-center">
                     <table id="tableau2" class="table-striped" style="width:100%">
@@ -88,7 +90,7 @@ and open the template in the editor.
             </div>
         </div>
 
-        <div id='message' style='color: red;'></div><br/>
+        
         
          <script>
             
@@ -116,7 +118,7 @@ and open the template in the editor.
                 })
                 .fail(function() {
                     $('#message').html('ERREUR Chargement');
-                    alert('ERREUR lors du chargement de la page');
+                    window.location.href = "./ActionServlet";
                 })
                 .always(function() {
                     //
@@ -150,8 +152,7 @@ and open the template in the editor.
                 })
                 .fail(function() {
                     $('#message').html('ERREUR Chargement');
-                    alert('ERREUR lors du chargement de la page');
-                    //window.location.href = "./index.html";
+                    window.location.href = "./ActionServlet";
                 })
                 .always(function() {
                     //

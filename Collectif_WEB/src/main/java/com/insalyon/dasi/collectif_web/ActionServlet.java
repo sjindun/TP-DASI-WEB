@@ -7,10 +7,6 @@ package com.insalyon.dasi.collectif_web;
  */
 
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +22,6 @@ import metier.modele.Adherent;
 import metier.modele.Demande;
 import metier.modele.Evenement;
 import metier.modele.Lieu;
-import metier.service.ServiceMetier;
 
 /**
  *
@@ -100,7 +95,7 @@ public class ActionServlet extends HttpServlet {
                         gLL.execute(request);
                         List<Lieu> lieux = (List<Lieu>)request.getAttribute("liste");
                         
-                        Formattage formattage = new Formattage();
+                        Formatage formattage = new Formatage();
                         String json = formattage.getJsonListeLieux(lieux);
                         
                         PrintWriter out=response.getWriter();
@@ -113,7 +108,7 @@ public class ActionServlet extends HttpServlet {
                         gLE.execute(request);
                         List<Evenement> ev = (List<Evenement>)request.getAttribute("liste");
                         
-                        Formattage formattage = new Formattage();
+                        Formatage formattage = new Formatage();
                         String json = formattage.getJsonListeEvenements(ev);
                         
                         PrintWriter out=response.getWriter();
@@ -152,7 +147,7 @@ public class ActionServlet extends HttpServlet {
                         gLP.execute(request);
                         List<Adherent> ad = (List<Adherent>)request.getAttribute("liste");
                         
-                        Formattage formattage = new Formattage();
+                        Formatage formattage = new Formatage();
                         String json = formattage.getJsonListePositionParticipants(ad);
                         
                         PrintWriter out=response.getWriter();
@@ -169,7 +164,7 @@ public class ActionServlet extends HttpServlet {
                         gLC.execute(request);
                         List<Demande> liste = (List<Demande>)request.getAttribute("liste");
                         
-                        Formattage formattage = new Formattage();
+                        Formatage formattage = new Formatage();
                         String json = formattage.getJsonListeDemandes(liste);
                         
                         PrintWriter out=response.getWriter();
@@ -182,7 +177,7 @@ public class ActionServlet extends HttpServlet {
                         gLA.execute(request);
                         List<Activite> activites = (List<Activite>)request.getAttribute("liste");
                         
-                        Formattage formattage = new Formattage();
+                        Formatage formattage = new Formatage();
                         String json = formattage.getJsonListeActivites(activites);
                         
                         PrintWriter out=response.getWriter();
@@ -205,65 +200,8 @@ public class ActionServlet extends HttpServlet {
                     
                 }
             }
-            /*
-            Adherent sessionAdherent = (Adherent)session.getAttribute("adherent");
-            if(sessionAdherent == null){
-                // Redirection vers l'index
-                
-                //response.sendRedirect("/index.html");
-                System.out.println("cc");
-            }else{
-                // Autres actions !!
-            }
-            */
         }
-        
-        /**
-        if("getActivite".equals(todo)){
-            long id = Long.parseLong(request.getParameter("id"));
-            
-            ServiceMetier servM = new ServiceMetier();
-            List <Activite> liste = servM.getActivites();
-            JsonArray jsonListe = new JsonArray();
-            for(Activite act : liste){
-                if(act.getId()==id){
-                    
-                    JsonObject jsonActivite = new JsonObject();
-                    jsonActivite.addProperty("denomination", act.getDenomination());
-                    jsonActivite.addProperty("payant", (act.getPayant()?"oui":"non"));
-                    jsonActivite.addProperty("nbParticipants", act.getNbParticipants());
-                    jsonListe.add(jsonActivite);
-                }
-            }
-            
-            JsonObject container = new JsonObject();
-            container.add("activites", jsonListe); 
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String json = gson.toJson(container);
-            out.println(json);
-        }
-        **/
-        
-        
-        
-        /*
-        try (PrintWriter out = response.getWriter()) {
-            // TODO output your page here. You may use following sample code. 
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ActionServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ActionServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-        */
-        
-        
-        
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
